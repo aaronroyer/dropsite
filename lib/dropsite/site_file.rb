@@ -16,7 +16,7 @@ module Dropsite
       if File.extname(name).empty?
         'unknown'
       else
-        ext = File.extname(name).sub /^\./, ''
+        ext = File.extname(name).sub(/^\./, '')
         EXTENSIONS.each {|k, v| return k if v.include? ext}
       end
     end

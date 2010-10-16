@@ -1,0 +1,11 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<body>
+		<% @entries.sort.each do |entry| %>
+			<div class="entry <%= entry.file_type %>">
+				<a href="<%= entry.link %>"><%= entry.name %></a>
+			</div>
+		<% end %>
+	</body>
+</html>

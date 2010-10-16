@@ -12,4 +12,9 @@ class TestSiteFile < Test::Unit::TestCase
     assert_equal 'text', SiteFile.new('/pics/pic1.txt').file_type
     assert_equal 'unknown', SiteFile.new('/pics/plainoldfile').file_type
   end
+  
+  def test_top_level
+    assert SiteFile.new('/pic1.jpg').top_level?
+    assert !SiteFile.new('/pics/pic1.jpg').top_level?
+  end
 end

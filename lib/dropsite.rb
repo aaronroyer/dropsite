@@ -1,6 +1,11 @@
-$:.unshift File.dirname(__FILE__)
+THIS_DIR = File.dirname(__FILE__)
+$:.unshift THIS_DIR
 
-require 'dropsite/site'
-require 'dropsite/site_item'
-require 'dropsite/site_dir'
-require 'dropsite/site_file'
+module Dropsite
+  TEMPLATES_DIR = File.join(THIS_DIR, 'dropsite', 'templates')
+  ASSETS_DIR = File.join(THIS_DIR, 'dropsite', 'assets')
+end
+
+%w[dir_renderer plugins site site_item site_dir site_file].each do |lib|
+  require "dropsite/#{lib}"
+end
