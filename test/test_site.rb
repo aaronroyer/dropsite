@@ -19,4 +19,16 @@ class TestSite < Test::Unit::TestCase
     assert pics_dir.files.find {|f| f.name == 'sculpture.jpg'}
     assert pics_dir.dirs.empty?
   end
+  
+  def test_create_site_tree_from_simple_public_dir_with_exclusions
+    site = Site.new(
+      :source => File.join(FIXTURES_DIR, 'simple_public'),
+      :excludes => ['pics', 'file1.txt']
+    )
+    top_level = site.read
+    
+    assert_equal 1, top_level.files.size
+    assert top_level.files.find {|f| f.name == 'file2.txt'}
+    assert top_level.dirs.empty?
+  end
 end

@@ -1,4 +1,4 @@
-module DropSite
+module Dropsite
   class Site
     attr_reader :site_root
     
@@ -8,38 +8,44 @@ module DropSite
         @excludes = []
       else
         @config = config.clone
-        @source = config['source']
-        @excludes = config['excludes'] || []
+        @source = config[:source]
+        @excludes = config[:excludes] || []
       end
       
-      @tree = nil
+      @site_root = nil
     end
     
     def process
       read
+      render
     end
     
     def read
       @site_root = read_directory
     end
     
+    def render
+      #
+    end
+    
+    protected
+    
     def read_directory(dir='')
       base = File.join(@source, dir)
       entries = filter_entries(Dir.entries(base))
       
-      dirs = []
-      files = []
+      dir_entries = []
       
       entries.each do |f|
         f_abs = File.join(base, f)
         f_rel = File.join(dir, f)
         if File.directory?(f_abs)
-          dirs << read_directory(f_rel)
+          dir_entries << read_directory(f_rel)
         elsif !File.symlink?(f_abs)
-          files << SiteFile.new(f_rel)
+          dir_entries << SiteFile.new(f_rel)
         end
       end
-      SiteDir.new(dir, dirs, files)
+      SiteDir.new(dir, dir_entries)
     end
     
     def filter_entries(entries)

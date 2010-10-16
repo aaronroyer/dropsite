@@ -1,23 +1,22 @@
-module DropSite
-  class SiteDir
-    attr_accessor :path, :dirs, :files
+module Dropsite
+  class SiteDir < SiteItem
+    attr_accessor :path, :entries
     
-    def initialize(path, dirs, files)
+    def initialize(path, entries)
       @path = path == '' ? '/' : path
-      @dirs = dirs || []
-      @files = files || []
+      @entries = entries
     end
     
-    def name
-      File.basename @path
+    def files
+      @entries.find_all {|e| e.is_a? SiteFile}
+    end
+    
+    def dirs
+      @entries.find_all {|e| e.is_a? SiteDir}
     end
     
     def is_root?
       @path == '/'
-    end
-    
-    def get_binding
-      binding
     end
     
     def to_s

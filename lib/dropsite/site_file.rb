@@ -1,5 +1,5 @@
-module DropSite
-  class SiteFile
+module Dropsite
+  class SiteFile < SiteItem
     EXTENSIONS = {
       'image' => %w[jpg jpeg gif],
       'text' => %w[txt],
@@ -12,10 +12,6 @@ module DropSite
       @path = path
     end
     
-    def name
-      File.basename @path
-    end
-    
     def file_type
       if File.extname(name).empty?
         'unknown'
@@ -23,10 +19,6 @@ module DropSite
         ext = File.extname(name).sub /^\./, ''
         EXTENSIONS.each {|k, v| return k if v.include? ext}
       end
-    end
-    
-    def get_binding
-      binding
     end
     
     def to_s
