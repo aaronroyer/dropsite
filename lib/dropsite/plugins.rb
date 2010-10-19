@@ -1,3 +1,5 @@
-$:.unshift File.dirname(__FILE__)
+PLUGINS_DIR = File.join(File.dirname(__FILE__), 'plugins')
 
-require 'plugins/simple_index/simple_index'
+Dir.entries(PLUGINS_DIR).reject {|e| e =~ /^\./}.each do |e|
+  require File.join(PLUGINS_DIR, e, e)
+end

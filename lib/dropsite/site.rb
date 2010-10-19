@@ -32,7 +32,7 @@ module Dropsite
     end
     
     def write
-      site_dir = File.join(@public_dir, 'site')
+      site_dir = File.join(@public_dir, 'dropsite')
       puts "Creating root site dir at #{site_dir}"
       Dir.mkdir(site_dir)
       @site_tree.write
@@ -41,7 +41,7 @@ module Dropsite
       Dir.mkdir(site_assets_dir)
       DirRenderer.renderers.each do |r|
         if File.exist? r.assets_dir
-          FileUtils.cp_r(r.assets_dir, File.join(site_assets_dir, underscore(r.class.to_s)))
+          FileUtils.cp_r(r.assets_dir, File.join(site_assets_dir, Dropsite.underscore(r.class.to_s)))
         end
       end
     end
@@ -60,7 +60,7 @@ module Dropsite
         if File.directory?(f_abs)
           dir_entries << read_directory(f_rel)
         elsif !File.symlink?(f_abs)
-          dir_entries << SiteFile.new(f_rel)
+          dir_entries << SiteFile.new(f_rel, f_abs)
         end
       end
       SiteDir.new(dir, dir_entries, @public_dir)
@@ -70,13 +70,6 @@ module Dropsite
       entries.reject do |e|
         ['.', '_', '#'].include?(e[0..0]) || e[-1..-1] == '~' || @excludes.include?(e)
       end
-    end
-    
-    def underscore(camel_cased_word)
-      camel_cased_word.to_s.gsub(/::/, '/').
-      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
-      tr("-", "_").downcase
     end
   end
 end

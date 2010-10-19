@@ -20,6 +20,8 @@ module Dropsite
       @@renderers
     end
     
+    # Find the first renderer that can render the given SiteDir. Non-default (user) plugins
+    # are searched first.
     def DirRenderer.find_renderer(site_dir)
       @@renderers.partition {|r| !r.is_default? }.flatten.find {|r| r.can_render?(site_dir)}
     end
@@ -32,6 +34,8 @@ module Dropsite
     
     # Overridden in subclass if you don't want to just find and use a template
     def render(site_dir)
+      site_dir.rendered_by = self.class
+      
       if File.extname(template_path) == '.erb'
         @template = @template || ERB.new(IO.read(template_path))
         @template.result(site_dir.get_binding)

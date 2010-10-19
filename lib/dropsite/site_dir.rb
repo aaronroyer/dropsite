@@ -1,9 +1,9 @@
 module Dropsite
   class SiteDir < SiteItem
-    attr_accessor :path, :entries
+    attr_accessor :entries
     
     def initialize(path, entries, site_dir)
-      @path = path == '' ? '/' : path
+      @path = path == '/' ? '' : path
       @entries = entries
       @site_dir = site_dir
       @content = nil
@@ -23,7 +23,7 @@ module Dropsite
       else
         # Sub-directories all need to be created here
         pieces = @path.sub(/^\//, '').split('/')
-        dir_name = File.join(@site_dir, 'site', *pieces)
+        dir_name = File.join(@site_dir, 'dropsite', *pieces)
         index_file = dir_name + '.html'
         puts "Writing index file at #{index_file}"
         File.open(index_file, 'w') {|f| f.puts @content}
@@ -41,11 +41,15 @@ module Dropsite
     end
     
     def root?
-      @path == '/'
+      @path == ''
     end
     
     def file_type
       'directory'
+    end
+    
+    def size
+      ''
     end
     
     def to_s

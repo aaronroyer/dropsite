@@ -3,16 +3,16 @@ require File.join(File.dirname(__FILE__), 'helper')
 class TestSite < Test::Unit::TestCase
   def test_create_site_tree_from_simple_public_dir
     site = Site.new(File.join(FIXTURES_DIR, 'simple_public'))
-    top_level = site.read
+    root = site.read
     
-    assert top_level.is_a? SiteDir
-    assert_equal '/', top_level.path
-    assert_equal 2, top_level.files.size
-    assert top_level.files.find {|f| f.name == 'file1.txt'}
-    assert top_level.files.find {|f| f.name == 'file2.txt'}
-    assert_equal 1, top_level.dirs.size
+    assert root.is_a? SiteDir
+    assert_equal '', root.path
+    assert_equal 2, root.files.size
+    assert root.files.find {|f| f.name == 'file1.txt'}
+    assert root.files.find {|f| f.name == 'file2.txt'}
+    assert_equal 1, root.dirs.size
     
-    pics_dir = top_level.dirs[0]
+    pics_dir = root.dirs[0]
     assert_equal 'pics', pics_dir.path
     assert_equal 2, pics_dir.files.size
     
@@ -32,10 +32,10 @@ class TestSite < Test::Unit::TestCase
       :source => File.join(FIXTURES_DIR, 'simple_public'),
       :excludes => ['pics', 'file1.txt']
     )
-    top_level = site.read
+    root = site.read
     
-    assert_equal 1, top_level.files.size
-    assert top_level.files.find {|f| f.name == 'file2.txt'}
-    assert top_level.dirs.empty?
+    assert_equal 1, root.files.size
+    assert root.files.find {|f| f.name == 'file2.txt'}
+    assert root.dirs.empty?
   end
 end

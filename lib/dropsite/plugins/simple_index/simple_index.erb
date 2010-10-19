@@ -1,11 +1,37 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
 <html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>My Dropbox Files<%= " - #{name}" if !root? %></title>
+		<%= stylesheet_link_tag 'reset' %>
+		<%= stylesheet_link_tag 'simple_index' %>
+		<%= javascript_include_tag 'simple_index' %>
+	</head>
 	<body>
-		<% @entries.sort.each do |entry| %>
-			<div class="entry <%= entry.file_type %>">
-				<a href="<%= entry.link %>"><%= entry.name %></a>
+		<div id="content">
+			<div id="breadcrumbs">
+				<a class="root-link" href="<%= back_link('root') %>">my files</a>
+				<% each_parent_directory_link_tag(false, {:class => 'parent-dir-link'}) do |tag| %>
+					<span class="sep">/</span><%= tag %>
+				<% end %>
+				<% if !root? %>
+					<span class="sep">/</span><span class="current-dir"><%= name %></span>
+				<% end %>
 			</div>
-		<% end %>
+			<table id="file-list">
+				<tr class="header">
+					<th>&nbsp;</th><th>name</th><th>type</th><th>size</th>
+				</tr>
+				<% @entries.sort.each do |entry| %>
+				<tr class="entry">
+					<td class="icon"><%= image_tag "icons/#{entry.file_type}.png" %></td>
+					<td class="link"><a href="<%= entry.link %>"><%= entry.name %></a></td>
+					<td class="type"><%= entry.file_type %></td>
+					<td class="size"><%= entry.size %></td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
 	</body>
 </html>
