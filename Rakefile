@@ -7,13 +7,7 @@ Rake::TestTask.new do |t|
   t.pattern = 'test/**/test_*.rb'
 end
 
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'dropsite'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+task :default => [:test]
 
 begin
   require 'rcov/rcovtask'
@@ -25,4 +19,15 @@ begin
 rescue LoadError
 end
 
-task :default => [:test]
+Rake::RDocTask.new do |rdoc|
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'dropsite'
+  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+desc "Build gem package"
+task :package => 'dropsite.gemspec' do
+  sh "gem build dropsite.gemspec"
+end

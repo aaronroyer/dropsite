@@ -1,0 +1,25 @@
+dropsite
+    gem install dropsite
+
+Dropsite creates a site of interlinked file index pages in the Public directory
+of your Dropbox. The site created is minimally invasive to your Public
+directory by only creating one top-level HTML page and one folder, leaving your
+directories unjunked.
+
+BE WARNED: while this seems to work fine, it is presently considered
+experimental.
+
+To create the site:
+    $ dropsite
+
+This deletes "index.html" and the directory "dropsite" in your Dropbox Public
+directory if they exist, creates "index.html" as the top-level index, and puts
+the rest of the index pages and assets in the "dropsite" directory.
+
+To specify a different Dropbox directory:
+    $ dropsite --dropbox-home ~/Somewhere/Else
+
+You can also use this if you just want to test this elsewhere before turning
+it loose on your precious files.
+
+MIT licensed - see LICENSE

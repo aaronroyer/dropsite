@@ -29,7 +29,7 @@ class TestSite < Test::Unit::TestCase
   
   def test_create_site_tree_from_simple_public_dir_with_exclusions
     site = Site.new(
-      :source => File.join(FIXTURES_DIR, 'simple_public'),
+      :public_dir => File.join(FIXTURES_DIR, 'simple_public'),
       :excludes => ['pics', 'file1.txt']
     )
     root = site.read

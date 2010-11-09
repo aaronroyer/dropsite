@@ -15,7 +15,7 @@ class TestWriteSite < Test::Unit::TestCase
   
   def test_simple_process
     FileUtils.cp_r(File.join(FIXTURES_DIR, 'simple_public'), File.join(TMP_DIR, 'simple_public'))
-    site = Site.new(File.join(TMP_DIR, 'simple_public'))
+    site = Site.new(:public_dir => File.join(TMP_DIR, 'simple_public'), :quiet => true)
     site.process
     
     # Check that all the index pages are there

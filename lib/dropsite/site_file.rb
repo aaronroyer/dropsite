@@ -8,9 +8,10 @@ module Dropsite
     
     attr_accessor :size_in_bytes
     
-    def initialize(rel_path, abs_path=nil)
+    def initialize(rel_path, abs_path=nil, site=nil)
       @path = rel_path
       @size_in_bytes = File.size(abs_path) if abs_path
+      @site = site
     end
     
     def file_type
@@ -26,6 +27,7 @@ module Dropsite
     # Human readable file size
     def size
       return '' if !@size_in_bytes
+      return '0 B' if @size_in_bytes == 0
       units = %w{B KB MB GB TB}
       e = (Math.log(@size_in_bytes)/Math.log(1024)).floor
       s = "%.1f" % (@size_in_bytes.to_f / 1024 ** e)

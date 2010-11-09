@@ -2,10 +2,10 @@ module Dropsite
   class SiteDir < SiteItem
     attr_accessor :entries
     
-    def initialize(path, entries, site_dir)
+    def initialize(path, entries, site)
       @path = path == '/' ? '' : path
       @entries = entries
-      @site_dir = site_dir
+      @site = site
       @content = nil
     end
     
@@ -17,15 +17,15 @@ module Dropsite
     def write
       if root?
         # The root site directory was created in Site
-        index_file = File.join(@site_dir, 'index.html')
-        puts "Writing top level index file at #{index_file}"
+        index_file = File.join(@site.public_dir, 'index.html')
+        notice "Writing top level index file at #{index_file}"
         File.open(index_file, 'w') {|f| f.puts @content}
       else
         # Sub-directories all need to be created here
         pieces = @path.sub(/^\//, '').split('/')
-        dir_name = File.join(@site_dir, 'dropsite', *pieces)
+        dir_name = File.join(@site.public_dir, 'dropsite', *pieces)
         index_file = dir_name + '.html'
-        puts "Writing index file at #{index_file}"
+        notice "Writing index file at #{index_file}"
         File.open(index_file, 'w') {|f| f.puts @content}
         Dir.mkdir(dir_name)
       end

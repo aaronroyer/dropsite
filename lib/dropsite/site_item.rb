@@ -15,5 +15,11 @@ module Dropsite
     def <=>(other)
       name <=> other.name
     end
+    
+    protected
+    
+    def notice(message)
+      @site.notice(message) if @site
+    end
   end
 end
