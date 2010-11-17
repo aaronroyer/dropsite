@@ -1,9 +1,9 @@
 module Dropsite
-  
+
   # Helper methods, accessible in templates, to be included in renderable items
   module RenderHelper
     attr_accessor :rendered_by
-    
+
     def link
       # TODO: URL escape links
       if top_level? && (!is_a? SiteDir)
@@ -19,38 +19,38 @@ module Dropsite
         end
       end
     end
-    
+
     def stylesheet_link_tag(stylesheet_name)
       stylesheet_name = "#{stylesheet_name}.css" if not stylesheet_name =~ /\.css$/
       %{<link rel="stylesheet" href="#{assets_link_base}css/#{stylesheet_name}" type="text/css" media="screen">}
     end
-    
+
     def javascript_include_tag(javascript_file_name)
       javascript_file_name = "#{javascript_file_name}.js" if not javascript_file_name =~ /\.js$/
       %{<script type="text/javascript" src="#{assets_link_base}js/#{javascript_file_name}"></script>}
     end
-    
+
     def image_tag(image_file_name)
       %{<img src="#{assets_link_base}images/#{image_file_name}" />}
     end
-    
+
     def parent_directory_link_tag(levels_up=1, options={})
       %{<a href="#{back_link(levels_up)}"#{tag_attributes(options)}>#{parent_dir_name(levels_up)}</a>}
     end
-    
+
     def each_parent_directory_link_tag(*args)
       include_root = true
       include_root = args[0] if args.size > 0 && (!args[0].is_a? Hash)
       options = args.find {|arg| arg.is_a? Hash}
       options = {} if !options
-      
+
       levels_up = path.split('/').size
       levels_up = levels_up - 1 if !include_root
-      levels_up.downto(1).each do |level_up|
+      levels_up.downto(1) do |level_up|
         yield parent_directory_link_tag(level_up, options)
       end
     end
-    
+
     def assets_link_base
       if root?
         "dropsite/dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
@@ -60,7 +60,7 @@ module Dropsite
         (['..'] * dirs_up).join('/') + "#{'/' if dirs_up > 0}dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
       end
     end
-    
+
     # Get a link to a parent page
     def back_link(levels_up=1)
       # TODO: factor this out a bit between parent_dir_name
@@ -73,7 +73,7 @@ module Dropsite
         root? ? '' : (['..'] * (path.split('/').size)).join('/') + '/index.html'
       end
     end
-    
+
     def parent_dir_name(levels_up=1)
       if levels_up.is_a?(Integer) && levels_up > 0 && levels_up < path.split('/').size
         dir_name = path.split('/')[(levels_up + 1) * -1]
@@ -83,13 +83,13 @@ module Dropsite
         'my files'
       end
     end
-    
+
     def get_binding
       binding
     end
-    
+
     protected
-    
+
     def tag_attributes(options)
       options.empty? ? '' : ' ' + options.keys.map {|k| %{#{k.to_s}="#{options[k].to_s}"} }.join
     end
