@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'dropsite'
-  s.version = '0.2'
+  s.version = '0.2.1'
   s.platform = Gem::Platform::RUBY
 
   s.description = "creates index pages in your Dropbox public directory"
@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
     "invasive to your Public directory by only creating one top-level " +
     "HTML page and one folder, leaving your directories unjunked." +
     "\nBE WARNED: while I _think_ this probably works fine, it is " +
-    "presently considered experimental." 
+    "presently considered experimental."
 
   s.authors     = ["Aaron Royer"]
   s.email       = "aaronroyer@gmail.com"
