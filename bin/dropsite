@@ -1,38 +1,5 @@
 #!/usr/bin/env ruby
-
-require 'optparse'
-
-# TODO: take this out later
 $:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'dropsite'
-include Dropsite
 
-options = {
-  :quiet => false
-}
-
-OptionParser.new do |opts|
-  opts.on('-d', '--dropbox-home [PATH]', 'Specify Dropbox directory') {|path| options[:dropbox_home] = path }
-  opts.on('-q', '--quiet', 'Suppress site processing output') {|| options[:quiet] = true }
-  opts.on_tail('-h', '--help', 'Show this message') do
-    puts opts
-    exit
-  end
-  opts.on_tail('--version', 'Show version') do
-    puts "Dropsite version: #{Dropsite::VERSION}"
-    exit
-  end
-end.parse!
-
-options[:dropbox_home] = Dropsite.find_dropbox_dir if not options[:dropbox_home]
-
-if !options[:dropbox_home] || !File.exist?(options[:dropbox_home])
-  $stderr.puts 'Dropbox home directory cannot be found or does not exist'
-  $stderr.puts 'Set valid directory with --dropbox-home DIRECTORY'
-  exit 1
-end
-
-options[:public_dir] = File.join(options[:dropbox_home], 'Public')
-
-site = Dropsite::Site.new(options)
-site.process
+Dropsite::Application.new.run

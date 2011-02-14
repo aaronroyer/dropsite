@@ -1,6 +1,8 @@
 require File.join(File.dirname(__FILE__), 'helper')
 
 class TestSite < Test::Unit::TestCase
+  include Fixtures
+
   def test_create_site_tree_from_simple_public_dir
     site = Site.new(File.join(FIXTURES_DIR, 'simple_public'))
     root = site.read
