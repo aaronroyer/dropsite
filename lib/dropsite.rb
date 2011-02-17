@@ -1,4 +1,6 @@
 module Dropsite
+  VERSION = '0.2.1'
+
   # Attempts to find the Dropbox directory (not the Public directory, the Dropbox base
   # directory) on this box. Returns nil if an existing directory could not be found.
   def dropbox_dir

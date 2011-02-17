@@ -1,5 +1,6 @@
 require 'optparse'
 require 'ostruct'
+require 'yaml'
 
 module Dropsite
   class Application
@@ -18,6 +19,8 @@ module Dropsite
         create_config_dir
       else
         options.public_dir = File.join(options.dropbox_home, 'Public')
+        cf = ConfigFile.new.read
+        options.exclude = cf.exclude if cf.exist?
         site = Dropsite::Site.new(options)
         site.process
       end
@@ -64,6 +67,27 @@ module Dropsite
           exit
         end
       end.parse!
+    end
+  end
+
+  # Wraps the main configuration file. Exists mostly in case of future
+  # expansion of configuration options.
+  class ConfigFile
+    attr_reader :path, :exclude
+
+    def initialize(path=nil)
+      @path = path || File.join(Dropsite.dropsite_config_dir, 'config.yml')
+    end
+
+    def read
+      return if not exist?
+      config = YAML::load(IO.read(path))
+      @exclude = config['exclude']
+      self
+    end
+
+    def exist?
+      File.exist? path
     end
   end
 end

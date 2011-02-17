@@ -3,18 +3,13 @@ require File.join(File.dirname(__FILE__), 'helper')
 class TestApplication < Test::Unit::TestCase
   include Fixtures
 
-  def setup
-    clean_tmp_dir
-  end
-
-  def teardown
-    clean_tmp_dir
-  end
+  def setup; clean_tmp_dir end
+  def teardown; clean_tmp_dir end
 
   def test_create_config_files
     ENV['DROPBOX_HOME'] = TMP_DIR
     ARGV << '-c'
-    Dropsite::Application.new.run
+    Application.new.run
 
     config_dir = File.join(TMP_DIR, '.dropsite')
     assert File.directory?(config_dir), 'Config dir created'
