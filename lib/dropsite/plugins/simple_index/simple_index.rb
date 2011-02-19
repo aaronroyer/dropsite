@@ -1,5 +1,5 @@
 class SimpleIndex < Dropsite::DirRenderer
-  def is_default?
+  def built_in?
     true
   end
 end
