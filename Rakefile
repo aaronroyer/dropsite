@@ -4,6 +4,7 @@ require 'rake/rdoctask'
 
 Rake::TestTask.new do |t|
   t.libs << 'lib'
+  t.libs << '.'
   t.pattern = 'test/**/test_*.rb'
 end
 
