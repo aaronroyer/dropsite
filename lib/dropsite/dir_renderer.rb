@@ -16,18 +16,8 @@ module Dropsite
       @@renderers << renderer
     end
 
-    def DirRenderer.renderers
+    def self.renderers
       @@renderers
-    end
-
-    # Find the first renderer that can render the given SiteDir. Non-built-in (user) plugins
-    # are searched first.
-    def DirRenderer.find_renderer(site_dir)
-      @@renderers.partition {|r| !r.built_in? }.flatten.find {|r| r.can_render?(site_dir)}
-    end
-
-    def DirRenderer.find_renderer_and_render(site_dir)
-      DirRenderer.find_renderer(site_dir).render(site_dir)
     end
 
     attr_accessor :template_path, :assets_dir

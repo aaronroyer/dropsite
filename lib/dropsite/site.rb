@@ -3,17 +3,18 @@ require 'fileutils'
 module Dropsite
   # Main site builder class. Some inspiration here from Jekyll (github.com/mojombo/jekyll).
   class Site
-    attr_reader :site_tree, :public_dir
+    attr_reader :site_tree, :public_dir, :exclude, :disabled_plugins
 
     def initialize(config)
       if config.is_a? String
         @public_dir = config
-        @exclude = []
+        @exclude, @disabled_plugins = [], []
         @quiet = false
       else
         @config = config.clone
         @public_dir = config[:public_dir]
         @exclude = config[:exclude] || []
+        @disabled_plugins = config[:disabled_plugins] || []
         @quiet = config[:quiet] || false
       end
 
