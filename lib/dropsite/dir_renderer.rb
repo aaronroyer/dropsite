@@ -22,7 +22,15 @@ module Dropsite
 
     attr_accessor :template_path, :assets_dir
 
-    # Overridden in subclass if you don't want to just find and use a template
+    # Overridden in subclass to indicate, usually based on the SiteDir contents, whether
+    # this renderer can render the SiteDir. This is false by default, unless the renderer
+    # is a built_in (included with Dropsite).
+    def can_render?(site_dir)
+      built_in?
+    end
+
+    # Optionally overridden in subclass to do the work of rendering. By default this will
+    # find plugin_name.erb in the plugin directory and use it to render.
     def render(site_dir)
       site_dir.rendered_by = self.class
 
@@ -34,9 +42,9 @@ module Dropsite
       end
     end
 
-    # Overriden in subclass or this won't do jack
-    def can_render?(site_dir)
-      built_in?
+    # Optionally overridden in subclass to write any files that will be needed to display
+    # the page (rendered by the render method) properly. This does nothing by default.
+    def write_page_assets(site_dir)
     end
 
     def built_in?

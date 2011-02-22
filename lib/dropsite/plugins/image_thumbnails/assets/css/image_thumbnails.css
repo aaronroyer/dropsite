@@ -1,0 +1,87 @@
+body {
+	background-color: white;
+	color: #484848;
+	font: 13.34px Helvetica, Arial, freesans, clean, sans-serif;
+	font-size: 90%;
+	text-align: center;
+}
+
+#content {
+	width: 920px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
+
+#breadcrumbs {
+	margin-top: 20px;
+	font-size: 140%;
+}
+
+#breadcrumbs .sep {
+	margin-left: 5px;
+	margin-right: 10px;
+}
+
+#breadcrumbs .root-link, #breadcrumbs .parent-dir-link {
+	text-decoration: none;
+}
+
+#breadcrumbs .root-link:hover, .parent-dir-link:hover {
+	text-decoration: underline;
+}
+
+#breadcrumbs .root-link {
+	color: #4183C4;
+	font-weight: bold;
+}
+
+#breadcrumbs .parent-dir-link {
+	color: #4183C4;
+}
+
+#breadcrumbs .current-dir {
+	color: #000000;
+}
+
+#file-list {
+	margin-top: 10px;
+	width: 100%;
+}
+
+#file-list .header {
+	background-color: #eaeaea;
+	border: 1px solid #e1e1e1;
+	color: #999999;
+	height: 28px;
+}
+
+.thumb-link {
+	width: 152px;
+	margin: 3px;
+	padding: 5px;
+	float: left;
+	text-align: center;
+	border: 2px solid #fff;
+	font-family: Monaco, 'Courier New', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+	text-decoration: none;
+}
+
+.thumb-link:hover {
+	border: 2px solid #4183C4;
+}
+
+.thumb-link .dir-container {
+	width: 100px;
+	height: 100px;
+}
+
+.thumb-link .dir-container img {
+	margin-top: 30px;
+	margin-left: 54px;
+}
+
+.image .name {
+	margin-left: auto;
+	margin-right: auto;
+}

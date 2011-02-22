@@ -40,4 +40,18 @@ class TestSite < Test::Unit::TestCase
     assert root.files.find {|f| f.name == 'file2.txt'}
     assert root.dirs.empty?
   end
+
+  def test_find_correct_plugin
+    # TODO: implement
+  end
+
+  def test_disable_plugins
+    site = Site.new(
+      :public_dir => File.join(FIXTURES_DIR, 'simple_public'),
+      :disabled_plugins => ['image_thumbnails']
+    )
+
+    assert_equal 1, site.disabled_plugins.size
+    assert site.disabled_plugins.include?('image_thumbnails')
+  end
 end

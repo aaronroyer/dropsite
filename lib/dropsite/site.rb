@@ -3,7 +3,7 @@ require 'fileutils'
 module Dropsite
   # Main site builder class. Some inspiration here from Jekyll (github.com/mojombo/jekyll).
   class Site
-    attr_reader :site_tree, :public_dir, :exclude, :disabled_plugins
+    attr_reader :site_tree, :public_dir, :exclude, :disabled_plugins, :site_files_dir
 
     def initialize(config)
       if config.is_a? String
@@ -50,21 +50,24 @@ module Dropsite
     end
 
     def render
-      @site_tree.render
+      site_tree.render
     end
 
     def write
-      notice "Creating site files dir at #{@site_files_dir}"
-      Dir.mkdir(@site_files_dir)
-      @site_tree.write
+      notice "Creating site files dir at #{site_files_dir}"
+      Dir.mkdir(site_files_dir)
+      site_tree.write
 
-      site_assets_dir = File.join(@site_files_dir, 'dropsite-assets')
-      Dir.mkdir(site_assets_dir)
+      Dir.mkdir(assets_dir)
       DirRenderer.renderers.each do |r|
         if File.exist? r.assets_dir
-          FileUtils.cp_r(r.assets_dir, File.join(site_assets_dir, Dropsite.underscorize(r.class.to_s)))
+          FileUtils.cp_r(r.assets_dir, File.join(assets_dir, Dropsite.underscorize(r.class.to_s)))
         end
       end
+    end
+
+    def assets_dir
+      File.join(@site_files_dir, 'dropsite-assets')
     end
 
     def notice(message)

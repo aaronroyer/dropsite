@@ -4,6 +4,9 @@ module Dropsite
   module RenderHelper
     attr_accessor :rendered_by
 
+
+    # Helpers for linking to other Dropsite rendered pages
+
     def link
       # TODO: URL escape links
       if top_level? && (!is_a? SiteDir)
@@ -20,20 +23,6 @@ module Dropsite
       end
     end
 
-    def stylesheet_link_tag(stylesheet_name)
-      stylesheet_name = "#{stylesheet_name}.css" if not stylesheet_name =~ /\.css$/
-      %{<link rel="stylesheet" href="#{assets_link_base}css/#{stylesheet_name}" type="text/css" media="screen">}
-    end
-
-    def javascript_include_tag(javascript_file_name)
-      javascript_file_name = "#{javascript_file_name}.js" if not javascript_file_name =~ /\.js$/
-      %{<script type="text/javascript" src="#{assets_link_base}js/#{javascript_file_name}"></script>}
-    end
-
-    def image_tag(image_file_name)
-      %{<img src="#{assets_link_base}images/#{image_file_name}" />}
-    end
-
     def parent_directory_link_tag(levels_up=1, options={})
       %{<a href="#{back_link(levels_up)}"#{tag_attributes(options)}>#{parent_dir_name(levels_up)}</a>}
     end
@@ -48,16 +37,6 @@ module Dropsite
       levels_up = levels_up - 1 if !include_root
       levels_up.downto(1) do |level_up|
         yield parent_directory_link_tag(level_up, options)
-      end
-    end
-
-    def assets_link_base
-      if root?
-        "dropsite/dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
-      else
-        # Work our way BACK up the path - crazy, right? Gotta do it though.
-        dirs_up = path.split(File::SEPARATOR).size - 1
-        (['..'] * dirs_up).join('/') + "#{'/' if dirs_up > 0}dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
       end
     end
 
@@ -82,6 +61,48 @@ module Dropsite
         # TODO: make this configurable
         'my files'
       end
+    end
+
+
+    # Helpers for including assets from the plugin assets directory
+
+    def stylesheet_link_tag(stylesheet_name)
+      stylesheet_name = "#{stylesheet_name}.css" if not stylesheet_name =~ /\.css$/
+      %{<link rel="stylesheet" href="#{plugin_assets_link_base}css/#{stylesheet_name}" type="text/css" media="screen">}
+    end
+
+    def javascript_include_tag(javascript_file_name)
+      javascript_file_name = "#{javascript_file_name}.js" if not javascript_file_name =~ /\.js$/
+      %{<script type="text/javascript" src="#{plugin_assets_link_base}js/#{javascript_file_name}"></script>}
+    end
+
+    def image_tag(image_file_name)
+      %{<img src="#{plugin_assets_link_base}images/#{image_file_name}" />}
+    end
+
+
+    # Helpers for including assets from the page assets (assets for an individual page,
+    # created by the write_page_assets method for a given renderer)
+
+    # Creates an img tag for the given page asset image. This links to a file directly
+    # in the page asset directory and an 'image' folder is not assumed.
+    def page_asset_image_tag(image_file_name)
+      %{<img src="#{page_assets_link_base}#{image_file_name}" />}
+    end
+
+
+    def plugin_assets_link_base
+      if root?
+        "dropsite/dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
+      else
+        # Work our way BACK up the path - crazy, right? Gotta do it though.
+        dirs_up = path.split(File::SEPARATOR).size - 1
+        (['..'] * dirs_up).join('/') + "#{'/' if dirs_up > 0}dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
+      end
+    end
+
+    def page_assets_link_base
+      "#{root? ? 'dropsite/' : ''}#{page_assets_dir_name}/"
     end
 
     def get_binding

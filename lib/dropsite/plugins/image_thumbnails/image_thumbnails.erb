@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+	"http://www.w3.org/TR/html4/strict.dtd">
+<%
+def thumb_name(image_file_name)
+	File.basename(image_file_name).sub(/\.\w+$/, '') + '-thumb' + File.extname(image_file_name)
+end
+def shorten(file_name)
+	if file_name.size < 20
+		file_name
+	else
+		file_name[0..7] + '...' + file_name[-8..-1]
+	end
+end
+%>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>My Dropbox Files<%= " - #{name}" if !root? %></title>
+		<%= stylesheet_link_tag 'reset' %>
+		<%= stylesheet_link_tag 'image_thumbnails' %>
+	</head>
+	<body>
+		<div id="content">
+			<div id="breadcrumbs">
+				<a class="root-link" href="<%= back_link('root') %>">my files</a>
+				<% each_parent_directory_link_tag(false, {:class => 'parent-dir-link'}) do |tag| %>
+					<span class="sep">/</span><%= tag %>
+				<% end %>
+				<% if !root? %>
+					<span class="sep">/</span><span class="current-dir"><%= name %></span>
+				<% end %>
+			</div>
+			<% dirs.sort.each do |dir| %>
+				<a class="thumb-link" href="<%= dir.link %>">
+					<div class="dir-container">
+						<%= image_tag 'icons/directory-large.png' %>
+					</div>
+					<div class="name"><%= shorten dir.name %></div>
+				</a>
+			<% end %>
+			<% files.sort.each do |file| %>
+				<a class="thumb-link" href="<%= file.link %>">
+					<%= page_asset_image_tag thumb_name(file.name) %>
+					<div class="name"><%= shorten file.name %></div>
+				</a>
+			<% end %>
+		</div>
+	</body>
+</html>
