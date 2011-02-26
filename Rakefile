@@ -2,13 +2,21 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-Rake::TestTask.new do |t|
+Rake::TestTask.new("test:units") do |t|
   t.libs << 'lib'
   t.libs << '.'
-  t.pattern = 'test/**/test_*.rb'
+  t.pattern = 'test/unit/**/test_*.rb'
 end
 
-task :default => [:test]
+Rake::TestTask.new("test:integration") do |t|
+  t.libs << 'lib'
+  t.libs << '.'
+  t.pattern = 'test/integration/**/test_*.rb'
+end
+
+task :test => ['test:units', 'test:integration']
+
+task :default => 'test:units'
 
 begin
   require 'rcov/rcovtask'
