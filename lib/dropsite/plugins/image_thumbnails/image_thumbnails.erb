@@ -31,7 +31,7 @@ end
 				<% end %>
 			</div>
 			<% dirs.sort.each do |dir| %>
-				<a class="thumb-link" href="<%= dir.link %>">
+				<a class="thumb-link" href="<%= url_for dir %>">
 					<div class="dir-container">
 						<%= image_tag 'icons/directory-large.png' %>
 					</div>
@@ -39,7 +39,7 @@ end
 				</a>
 			<% end %>
 			<% files.sort.each do |file| %>
-				<a class="thumb-link" href="<%= file.link %>">
+				<a class="thumb-link" href="<%= url_for file %>">
 					<%= page_asset_image_tag thumb_name(file.name) %>
 					<div class="name"><%= shorten file.name %></div>
 				</a>

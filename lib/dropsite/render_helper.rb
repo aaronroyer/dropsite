@@ -23,6 +23,23 @@ module Dropsite
       end
     end
 
+    # Creates a relative URL, from the page for the current object, for the given SiteItem.
+    # This assumes the current object is a SiteDir.
+    def url_for(entry)
+      if entry.top_level? && (!entry.is_a? SiteDir)
+        entry.name
+      else
+        if entry.is_a? SiteDir # TODO: do a dynamic renderable test?
+          entry.top_level? ? "dropsite/#{entry.path}.html" : "#{name}/#{entry.name}.html".sub(/^\//, '')
+        else
+          # Builds a link back up to the file in Public root since the pages
+          # are built in a parallel directory structure
+          dirs_up = entry.path.split(File::SEPARATOR).size - 1
+          (['..'] * dirs_up).join('/') + "/#{entry.path}"
+        end
+      end
+    end
+
     def parent_directory_link_tag(levels_up=1, options={})
       %{<a href="#{back_link(levels_up)}"#{tag_attributes(options)}>#{parent_dir_name(levels_up)}</a>}
     end

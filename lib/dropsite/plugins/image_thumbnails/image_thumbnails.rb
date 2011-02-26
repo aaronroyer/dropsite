@@ -1,7 +1,7 @@
 class ImageThumbnails < Dropsite::DirRenderer
   def can_render?(site_dir)
     return false if not thumbnail_generator
-    site_dir.files.all? {|e| e.file_type == :image}
+    !site_dir.files.empty? && site_dir.files.all? {|e| e.file_type == :image}
   end
 
   def write_page_assets(site_dir)
