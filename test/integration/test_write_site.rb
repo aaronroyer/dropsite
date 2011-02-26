@@ -20,7 +20,6 @@ class TestWriteSite < Test::Unit::TestCase
   end
 
   def test_write_only_simple_index_pages
-    return
     test_public_dir = File.join(TMP_DIR, 'simple_public')
     FileUtils.cp_r(File.join(FIXTURES_DIR, 'simple_public'), test_public_dir)
     site = Site.new(
@@ -111,6 +110,8 @@ class TestWriteSite < Test::Unit::TestCase
 
     # Just test the differences from test_write_only_simple_index_pages, trust
     # basic Dropsite setup is there
+
+    # TODO: make sure code using both image libraries is tested
 
     people_thumbs_dir = File.join(test_public_dir, *%w[dropsite pics dropsite-people-assets])
     assert File.exist?(File.join(people_thumbs_dir, 'beach-thumb.jpg'))
