@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'dropsite'
-  s.version = '0.2.1'
+  s.version = '0.3.0'
   s.platform = Gem::Platform::RUBY
 
   s.description = "creates index pages in your Dropbox public directory"
