@@ -110,11 +110,11 @@ module Dropsite
 
     def plugin_assets_link_base
       if root?
-        "dropsite/dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
+        "dropsite/dropsite-assets/#{underscorize(rendered_by)}/"
       else
         # Work our way BACK up the path - crazy, right? Gotta do it though.
         dirs_up = path.split(File::SEPARATOR).size - 1
-        (['..'] * dirs_up).join('/') + "#{'/' if dirs_up > 0}dropsite-assets/#{Dropsite.underscorize(rendered_by)}/"
+        (['..'] * dirs_up).join('/') + "#{'/' if dirs_up > 0}dropsite-assets/#{underscorize(rendered_by)}/"
       end
     end
 

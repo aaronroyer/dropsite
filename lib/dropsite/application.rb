@@ -7,7 +7,7 @@ module Dropsite
     def run
       handle_options
 
-      options.dropbox_home = Dropsite.dropbox_dir if not options.dropbox_home
+      options.dropbox_home = dropbox_dir if not options.dropbox_home
 
       if !options.dropbox_home || !File.exist?(options.dropbox_home)
         $stderr.puts 'Dropbox home directory cannot be found or does not exist'
@@ -19,8 +19,10 @@ module Dropsite
         create_config_dir
       else
         options.public_dir = File.join(options.dropbox_home, 'Public')
-        cf = ConfigFile.new.read
-        options.exclude = cf.exclude if cf.exist?
+        cf = ConfigFile.new
+        if cf.exist?
+          options.exclude = cf.exclude
+        end
         site = Dropsite::Site.new(options)
         site.process
       end
@@ -31,12 +33,12 @@ module Dropsite
     end
 
     def create_config_dir
-      if Dropsite.dropsite_config_dir
-        puts "Config directory already exists at: #{Dropsite.dropsite_config_dir}"
+      if dropsite_config_dir
+        puts "Config directory already exists at: #{dropsite_config_dir}"
         exit
       end
 
-      config_dir = File.join(Dropsite.dropbox_dir, '.dropsite')
+      config_dir = File.join(dropbox_dir, '.dropsite')
       Dir.mkdir(config_dir)
       File.open(File.join(config_dir, 'config.yml'), 'w') do |f|
         # TODO: put the contents in there
@@ -76,7 +78,7 @@ module Dropsite
     attr_reader :path, :exclude
 
     def initialize(path=nil)
-      @path = path || File.join(Dropsite.dropsite_config_dir, 'config.yml')
+      @path = path || dropsite_config_dir ? File.join(dropsite_config_dir, 'config.yml') : ''
     end
 
     def read

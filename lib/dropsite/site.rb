@@ -10,7 +10,13 @@ module Dropsite
         @public_dir = config
         @exclude, @disabled_plugins = [], []
         @quiet = false
-      else
+      elsif config.is_a? OpenStruct
+        @config = config.clone
+        @public_dir = config.public_dir
+        @exclude = config.exclude || []
+        @disabled_plugins = config.disabled_plugins || []
+        @quiet = config.quiet || false
+      elsif config.is_a? Hash
         @config = config.clone
         @public_dir = config[:public_dir]
         @exclude = config[:exclude] || []
@@ -61,7 +67,7 @@ module Dropsite
       Dir.mkdir(assets_dir)
       DirRenderer.renderers.each do |r|
         if File.exist? r.assets_dir
-          FileUtils.cp_r(r.assets_dir, File.join(assets_dir, Dropsite.underscorize(r.class.to_s)))
+          FileUtils.cp_r(r.assets_dir, File.join(assets_dir, underscorize(r.class.to_s)))
         end
       end
     end
