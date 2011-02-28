@@ -53,7 +53,9 @@ Or you can send me an email: aaronroyer@gmail.com
 
 Dropsite uses icons from:
 
-famfamfam.com
+famfamfam.com Silk Icons
+
+Yusuke Kamiyamane's Fugue icons (p.yusukekamiyamane.com)
 
 Echo Project (fedorahosted.org/echo-icon-theme/)
 
