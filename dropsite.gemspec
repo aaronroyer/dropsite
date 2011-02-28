@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'dropsite'
-  s.version = '0.3.1'
+  s.version = '0.3.2'
   s.platform = Gem::Platform::RUBY
 
   s.description = "creates index pages in your Dropbox public directory"
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.email       = "aaronroyer@gmail.com"
 
   s.files           = Dir['{bin/*,lib/**/*,test/**/*}'] +
-                          %w(README LICENSE dropsite.gemspec Rakefile)
+                          %w(README.rdoc LICENSE dropsite.gemspec Rakefile)
 
   s.executables << 'dropsite'
 
