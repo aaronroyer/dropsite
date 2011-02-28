@@ -7,16 +7,10 @@ class TestProcessSiteWithThumbnails < Test::Unit::TestCase
 
   def setup
     clean_tmp_dir
-    # Don't use the regular ~/.ruby_inline dir (ImageScience uses RubyInline) and leave
-    # the cached compiled code there, it causes some problems when testing with different
-    # Ruby versions. Delete it after every test.
-    ENV['INLINEDIR'] = File.join(TMP_DIR, 'ruby_inline')
-    Dir.mkdir(ENV['INLINEDIR'])
+    use_tmp_ruby_inline_dir
   end
 
-  def teardown
-    clean_tmp_dir
-  end
+  def teardown; clean_tmp_dir end
 
   def test_process_with_image_thumbnails
     test_public_dir = File.join(TMP_DIR, 'simple_public')

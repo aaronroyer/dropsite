@@ -5,7 +5,12 @@ require 'nokogiri'
 class TestProcessSiteManyFolders < Test::Unit::TestCase
   include Fixtures
 
-  def setup; clean_tmp_dir end
+  def setup
+    clean_tmp_dir
+    use_tmp_ruby_inline_dir
+  end
+
+  def teardown; clean_tmp_dir end
 
   def test_process_with_many_folders
     test_public_dir = File.join(TMP_DIR, 'many_folders_public')

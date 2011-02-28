@@ -16,12 +16,20 @@ module Fixtures
 
   def clean_tmp_dir
     Dir.entries(TMP_DIR).reject {|e| %w[. .. .gitignore].include? e}.each do |entry|
-    file = File.join(TMP_DIR, entry)
-    if File.directory?(file)
-      FileUtils.rm_rf(file)
-    else
-      File.delete(file)
+        file = File.join(TMP_DIR, entry)
+        if File.directory?(file)
+          FileUtils.rm_rf(file)
+        else
+          File.delete(file)
+        end
     end
-end
+  end
+
+  def use_tmp_ruby_inline_dir
+    # Don't use the regular ~/.ruby_inline dir (ImageScience uses RubyInline) and leave
+    # the cached compiled code there, it causes some problems when testing with different
+    # Ruby versions. Delete it after every test.
+    ENV['INLINEDIR'] = File.join(TMP_DIR, 'ruby_inline')
+    #Dir.mkdir(ENV['INLINEDIR'])
   end
 end

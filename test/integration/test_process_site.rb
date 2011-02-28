@@ -5,7 +5,10 @@ require 'nokogiri'
 class TestProcessSite < Test::Unit::TestCase
   include Fixtures
 
-  def setup; clean_tmp_dir end
+  def setup
+    clean_tmp_dir
+    use_tmp_ruby_inline_dir
+  end
   def teardown; clean_tmp_dir end
 
   def test_process_with_only_simple_index_pages
