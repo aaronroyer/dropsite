@@ -1,3 +1,5 @@
+require 'fileutils'
+
 class ImageThumbnails < Dropsite::DirRenderer
   def can_render?(site_dir)
     return false if not thumbnail_generator
@@ -12,11 +14,23 @@ class ImageThumbnails < Dropsite::DirRenderer
       src_image = e.abs_path
       case thumbnail_generator
       when :image_science
-        write_thumb_with_image_science(src_image, assets_dir)
+        begin
+          write_thumb_with_image_science(src_image, assets_dir)
+        rescue RuntimeError => e # I believe this is as specific as it gets
+          site_dir.warning "Could not create thumbnail for #{src_image} with ImageScience, " +
+            "a possible reason is that ImageScience cannot create thumbs for animated gifs" +
+            "\nError message: #{e.message}"
+          write_default_thumbnail(src_image, site_dir)
+        end
       when :rmagick
-        write_thumb_with_rmagick(src_image, assets_dir)
+         begin
+           write_thumb_with_rmagick(src_image, assets_dir)
+          rescue ImageMagickError => e
+            site_dir.warning "Could not create thumbnail for #{src_image} with RMagick\n#{e.message}"
+            write_default_thumbnail(src_image, assets_dir)
+          end
       else
-        raise "Unrecognized thumbnail generator: #{thumbnail_generator}"
+        site_dir.error "Unrecognized thumbnail generator: #{thumbnail_generator}"
       end
     end
   end
@@ -61,5 +75,16 @@ class ImageThumbnails < Dropsite::DirRenderer
 
   def thumb_file_name(image_file_name)
     File.basename(image_file_name).sub(/\.\w+$/, '') + '-thumb' + File.extname(image_file_name)
+  end
+
+  def write_default_thumbnail(src_image, site_dir)
+    # Need to figure out what type of file this is to make it work
+    default_thumb = File.join(plugin_assets_dir, 'images', 'icons', "image-large#{File.extname(src_image)}")
+
+    if File.exist? default_thumb
+      FileUtils.cp(default_thumb,File.join(site_dir.page_assets_dir, thumb_file_name(src_image)))
+    else
+      site_dir.error "BUG: no default thumb type exists for files with extension: #{File.extname(src_image)}"
+    end
   end
 end

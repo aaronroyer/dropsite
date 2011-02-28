@@ -76,9 +76,25 @@ module Dropsite
       File.join(@site_files_dir, 'dropsite-assets')
     end
 
-    def notice(message)
+    # User message themes loosely based on those from github.com/mxcl/homebrew
+
+    # Output a normal user message
+    def notice(msg, strong=false)
       return if @quiet
-      warn "#{File.basename($0)}: #{message}"
+      puts "#{Tty.blue}==>#{strong ? Tty.bold_white : Tty.reset + Tty.white} #{msg}#{Tty.reset}"
+    end
+
+    # Output a warning message
+    def warning(msg)
+      return if @quiet
+      puts "#{Tty.red}Warning#{Tty.reset}: #{msg}"
+    end
+
+    # Output an error message
+    def error(msg, err=nil)
+      return if @quiet
+      puts "#{Tty.red}Error#{Tty.reset}: #{msg}#{', details follow...' if err}"
+      puts err.to_s if err
     end
 
     protected
@@ -110,5 +126,24 @@ module Dropsite
         ['.', '_', '#'].include?(e[0..0]) || e[-1..-1] == '~' || @exclude.include?(e)
       end
     end
+  end
+end
+
+# Add a little color - based on some stuff from github.com/mxcl/homebrew
+class Tty
+  class << self
+    def blue; bold 34; end
+    def white; escape 39; end
+    def bold_white; bold 39; end
+    def red; underline 31; end
+    def yellow; underline 33 ; end
+    def reset; escape 0; end
+    def em; underline 39; end
+
+    private
+    def color(n); escape "0;#{n}" end
+    def bold(n); escape "1;#{n}" end
+    def underline(n); escape "4;#{n}" end
+    def escape(n); "\033[#{n}m" if $stdout.tty? end
   end
 end

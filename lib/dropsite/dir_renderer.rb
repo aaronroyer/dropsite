@@ -50,5 +50,9 @@ module Dropsite
     def built_in?
       false
     end
+
+    def plugin_assets_dir
+      File.join(File.dirname(__FILE__), 'plugins', underscorize(self.class.name), 'assets')
+    end
   end
 end
