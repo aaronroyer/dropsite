@@ -80,6 +80,7 @@ module Dropsite
 
     # Output a normal user message
     def notice(msg, strong=false)
+      # TODO: add a verbosity setting and use it here
       return if @quiet
       puts "#{Tty.blue}==>#{strong ? Tty.bold_white : Tty.reset + Tty.white} #{msg}#{Tty.reset}"
     end
@@ -87,7 +88,7 @@ module Dropsite
     # Output a warning message
     def warning(msg)
       return if @quiet
-      puts "#{Tty.red}Warning#{Tty.reset}: #{msg}"
+      puts "#{Tty.yellow}Warning#{Tty.reset}: #{msg}"
     end
 
     # Output an error message
