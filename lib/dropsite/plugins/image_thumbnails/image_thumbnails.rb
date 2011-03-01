@@ -1,6 +1,8 @@
 require 'fileutils'
 
 class ImageThumbnails < Dropsite::DirRenderer
+  VALID_THUMBNAIL_EXTENSIONS = %w[bmp gif jpeg jpg png tif tiff]
+
   def can_render?(site_dir)
     return false if not thumbnail_generator
     !site_dir.files.empty? && site_dir.files.all? {|e| e.file_type == :image}
@@ -78,13 +80,11 @@ class ImageThumbnails < Dropsite::DirRenderer
   end
 
   def write_default_thumbnail(src_image, site_dir)
-    # Need to figure out what type of file this is to make it work
-    default_thumb = File.join(plugin_assets_dir, 'images', 'icons', "image-large#{File.extname(src_image)}")
-
-    if File.exist? default_thumb
-      FileUtils.cp(default_thumb,File.join(site_dir.page_assets_dir, thumb_file_name(src_image)))
-    else
-      site_dir.error "BUG: no default thumb type exists for files with extension: #{File.extname(src_image)}"
+    # If not a valid extension then no thumbnail needs to be copied in, since at
+    # render time it should not expect it to be there
+    if VALID_THUMBNAIL_EXTENSIONS.include? File.extname(src_image).sub(/^\./, '')
+      default_thumb = File.join(plugin_assets_dir, 'images', 'icons', "image-large#{File.extname(src_image)}")
+      FileUtils.cp(default_thumb, File.join(site_dir.page_assets_dir, thumb_file_name(src_image)))
     end
   end
 end

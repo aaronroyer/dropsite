@@ -4,6 +4,15 @@
 def thumb_name(image_file_name)
 	File.basename(image_file_name).sub(/\.\w+$/, '') + '-thumb' + File.extname(image_file_name)
 end
+
+def thumb_link(file_name)
+	if renderer.class::VALID_THUMBNAIL_EXTENSIONS.include? File.extname(file_name).sub(/^\./, '')
+		page_asset_image_tag thumb_name(file_name)
+	else
+		image_tag 'icons/image-large.png'
+	end
+end
+
 def shorten(file_name)
 	if file_name.size < 20
 		file_name
@@ -40,7 +49,7 @@ end
 			<% end %>
 			<% files.sort.each do |file| %>
 				<a class="thumb-link" href="<%= url_for file %>">
-					<%= page_asset_image_tag thumb_name(file.name) %>
+					<%= thumb_link file.name %>
 					<div class="name"><%= shorten file.name %></div>
 				</a>
 			<% end %>
